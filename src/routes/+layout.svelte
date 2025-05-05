@@ -5,3 +5,8 @@
 </script>
 
 {@render children()}
+<style>
+	body{
+			background-color: #190200;
+	}
+</style>
