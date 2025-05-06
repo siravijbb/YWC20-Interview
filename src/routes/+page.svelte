@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Navbar from "$components/navbar.svelte";
+
+
 	let searchQuery = $state('')
 	let selectedCategory = $state('')
 	let results: any[] = $state([])
@@ -26,8 +29,8 @@
 
 	async function handleSearch() {
 		if (!selectedCategory) {
-			error = 'Please select a category.'
-			return
+
+			return error = 'กรุณาเลือกสาขาที่ต้องการค้นหา'
 		}
 
 		error = ''
@@ -80,7 +83,7 @@
 	}
 </script>
 
-<div class="min-w-full min-h-[90svh] bg-black   text-white">
+<div class="min-w-full min-h-[80vh] sm:min-h-[76.3svh] lg:min-h-[91.5svh]  bg-black   text-white">
 <section  class="bg-black  sticky top-0 ">
 	<nav
 		class=" mx-auto flex max-w-6xl items-center justify-between bg-black px-8 py-4 transition-all"
@@ -107,7 +110,7 @@
 		<div class="cta_nav">
 			<a href="https://register.ywc20.ywc.in.th"
 				><button
-					class="bg-y20c1 to-y20c2 flex gap-2 rounded-lg bg-gradient-to-r from-20% px-5 py-3 font-semibold text-white hover:opacity-90"
+					class="bg-y20c1 from-20% to-y20c2 flex gap-2 rounded-lg bg-gradient-to-r  px-5 py-3 font-semibold text-white hover:opacity-90"
 					><span class="text-xs sm:text-sm">ดูผลการคัดเลือก<br />เข้ารอบสัมภาษณ์</span></button
 				></a
 			>
@@ -141,27 +144,38 @@
 	</div>
 
 	{#if error}
-		<p class="text-red-500">{error}</p>
+		<p class="text-gray-400 text-center md:text-left ">{error}</p>
 	{/if}
 
 	{#if loading}
 		<p>Loading...</p>
 	{:else if results.length > 0}
-		<div class="mt-4 gap-4 grid grid-cols-2 text-gray-800">
+		<h2 class="text-center font-bold text-lg bg-y20c2 to-y20c1 bg-gradient-to-r from-0.5% text-transparent bg-clip-text">รายชื่อผู้มีสิทธิ์เข้าร่วมโครงการ</h2>
+		<div class="mt-4 gap-4 grid  grid-cols-1  lg:grid-cols-2 text-white">
 			{#each results as item}
-				<div class="rounded border bg-gray-50 p-3">
-					<p><strong>{item.firstName} {item.lastName}</strong></p>
-					<p>Ref: {item.interviewRefNo}</p>
-					<p>Major: {item.major}</p>
+				<div class="rounded  p-3   bg-y20c1/60 to-y20c2/60   bg-gradient-to-r">
+					<a href="#">
+					<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>
+					<p class="text-center text-lg">Ref: {item.interviewRefNo}</p>
+						{#if item.major === "web_design"}
+							<p class="text-center text-lg">สาขา: Web Design</p>
+						{:else if item.major === "web_programming"}
+							<p class="text-center text-lg">สาขา: Web Programming</p>
+						{:else if item.major === "web_marketing"}
+							<p class="text-center text-lg">สาขา: Web Marketing</p>
+						{:else if item.major === "web_content"}
+							<p class="text-center text-lg">สาขา: Web Content</p>
+						{/if}
+					</a>
 				</div>
 			{/each}
 		</div>
 	{:else if results.length == 0 && clicked !== false}
-		<p class="text-gray-500">No matching results.</p>
+		<p class="text-gray-400 text-center md:text-left ">ไม่พบผลการค้นหา กรุณาลองใหม่อีกครั้ง</p>
 	{/if}
 </section>
 
 </div>
-<section class="  mx-auto space-y-4  pt-8 px-8 bg-black text-gray-400  ">
+<section class="  mx-auto space-y-4  pt-8 px-8 bg-linear-to-b from-black to-y20c3 from-1% text-gray-400  ">
 	<footer id="footer" class=" max-w-7xl container mx-auto px-8 flex flex-col items-center justify-center  md:grid grid-cols-1 md:grid-cols-7 pb-8"><div class="col-span-1"><a href="https://www.webmaster.or.th/" target="_blank"><img alt="Main logo" loading="lazy" width="63" height="32" decoding="async" data-nimg="1" style="color:transparent" src="https://ywc20.ywc.in.th/twa.svg"></a></div><div class="col-span-1 md:col-span-3 flex gap-8 py-4"><a class="footer-link sm:text-sm" href="https://ywc20.ywc.in.th/privacy-policy">Privacy Policy</a><a class="footer-link sm:text-sm" href="https://ywc20.ywc.in.th/terms">Terms and Conditions</a><a class="footer-link sm:text-sm" href="https://sponsor.ywc.in.th">Sponsorship</a></div><div class="col-span-1 md:col-span-3"><p class="footer-text text-center md:text-right">Copyright 2003 - 2025. Young Webmaster Camp,</p><p class="footer-text text-center md:text-right">in association with Thai Webmaster and Online Media Association, all rights reserved.</p></div></footer>
 </section>
