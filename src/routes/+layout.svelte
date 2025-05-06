@@ -8,5 +8,6 @@
 <style>
 	body{
 			background-color: #190200;
+			font-family: Line Seed Sans TH;
 	}
 </style>
