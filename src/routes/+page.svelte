@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Navbar from '$components/navbar.svelte';
 	import Footer from '$components/footer.svelte';
+	import { onMount } from 'svelte';
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('');
@@ -12,6 +13,9 @@
 	type FullData = Record<string, Candidate[]>;
 
 	let fullData: FullData = $state({});
+	let SearchLimit = 0
+
+
 
 
 	const categories = [
@@ -31,6 +35,11 @@
 		if (!selectedCategory) {
 			return (error = 'กรุณาเลือกสาขาที่ต้องการค้นหา');
 		}
+		if(SearchLimit >= 10) {
+			alert('กรุณารอ 10 วินาทีก่อนค้นหาอีกรอบ');
+			throw new Error('U spam too much,wait 1 min');
+		}
+		SearchLimit++
 
 		error = '';
 		loading = true;
@@ -56,7 +65,15 @@
 						item.firstName.toLowerCase().includes(q) ||
 						item.lastName.toLowerCase().includes(q) ||
 						item.interviewRefNo.toLowerCase().includes(q)
-				);
+				)
+					.sort((a, b) => {
+						// Sort by firstName first, then lastName
+						const firstNameComparison = a.firstName.localeCompare(b.firstName);
+						if (firstNameComparison === 0) {
+							return a.lastName.localeCompare(b.lastName);
+						}
+						return firstNameComparison;
+					});
 			} else {
 				throw new Error(`fetch fail : ${response.status} ${response.statusText}`);
 			}
@@ -88,6 +105,16 @@
 				return firstNameComparison;
 			});
 	}
+	function ClearLimit() { // clear search limit
+		SearchLimit = 0;
+	}
+
+	onMount(() => {
+		let interval = setInterval(ClearLimit, 10000); // Poll every 5 seconds
+		return () => {
+			clearInterval(interval);
+		};
+	});
 </script>
 
 <head>
@@ -113,9 +140,8 @@
 				type="text"
 				placeholder="ค้นหาโดยชื่อหรือเลขประจำตัว"
 				bind:value={searchQuery}
-				onkeydown={(e) => e.key === 'Enter' ? handleSearch() : filterOntype()}
-				onkeyup={filterOntype}
-				onchange={filterOntype}
+				onkeyup={(e) => e.key === 'Enter' ? handleSearch() : filterOntype()}
+				onkeydown={filterOntype}
 				class="bg-y20c3 flex-1 rounded border px-3 py-2 placeholder-gray-400"
 			/>
 
