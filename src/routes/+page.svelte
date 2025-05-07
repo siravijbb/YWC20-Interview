@@ -2,6 +2,7 @@
 	import Navbar from '$components/navbar.svelte';
 	import Footer from '$components/footer.svelte';
 	import { onMount } from 'svelte';
+	let mappedInterview = $state('');
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('');
@@ -53,6 +54,9 @@
 				}
 			});
 			if (response.status === 200) {
+				RedirectToInterviewInfo()
+
+
 				fullData = await response.json();
 
 				const categoryData = fullData[selectedCategory] || [];
@@ -81,11 +85,12 @@
 
 			error = 'ไม่สามารถค้นหาได้ขณะนี้ กรุณาลองใหม่ภายหลัง';
 		} finally {
-			return (loading = false);
+			 loading = false;
 		}
 	}
 	function filterOntype() {
 		const categoryData = fullData[selectedCategory] || [];
+		RedirectToInterviewInfo();
 
 		// Simple search: match query in firstName, lastName, or interviewRefNo
 		const q = searchQuery.toLowerCase();results = categoryData
@@ -104,6 +109,24 @@
 				return firstNameComparison;
 			});
 	}
+	function RedirectToInterviewInfo(){
+		if(selectedCategory === "design") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/design"
+		}
+		else if(selectedCategory === "programming") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/programming"
+		}
+		else if(selectedCategory === "marketing") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/marketing"
+		}
+		else if(selectedCategory === "content") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/content"
+		}else {
+			mappedInterview = "#"
+		}
+	}
+
+
 	function ClearLimit() { // clear search limit
 		SearchLimit = 0;
 	}
@@ -205,7 +228,7 @@
 					<div
 						class="bg-y20c1/80 to-y20c2/80 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
 					>
-						<a href="#">
+						<a href={mappedInterview} target="_blank">
 							<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>
 							<p class="text-center text-lg">
 								เลขประจำตัวผู้เข้าสัมภาษณ์: <b>{item.interviewRefNo}</b>
