@@ -13,6 +13,7 @@
 
 	let fullData: FullData = $state({});
 
+
 	const categories = [
 		['design', 'สาขา Web Design'],
 		['programming', 'สาขา Web Programming'],
@@ -71,13 +72,21 @@
 		const categoryData = fullData[selectedCategory] || [];
 
 		// Simple search: match query in firstName, lastName, or interviewRefNo
-		const q = searchQuery.toLowerCase();
-		results = categoryData.filter(
-			(item) =>
-				item.firstName.toLowerCase().includes(q) ||
-				item.lastName.toLowerCase().includes(q) ||
-				item.interviewRefNo.toLowerCase().includes(q)
-		);
+		const q = searchQuery.toLowerCase();results = categoryData
+			.filter(
+				(item) =>
+					item.firstName.toLowerCase().includes(q) ||
+					item.lastName.toLowerCase().includes(q) ||
+					item.interviewRefNo.toLowerCase().includes(q)
+			)
+			.sort((a, b) => {
+				// Sort by firstName first, then lastName
+				const firstNameComparison = a.firstName.localeCompare(b.firstName);
+				if (firstNameComparison === 0) {
+					return a.lastName.localeCompare(b.lastName);
+				}
+				return firstNameComparison;
+			});
 	}
 </script>
 
@@ -105,6 +114,7 @@
 				placeholder="ค้นหาโดยชื่อหรือเลขประจำตัว"
 				bind:value={searchQuery}
 				onkeydown={filterOntype}
+				onchange={filterOntype}
 				class="bg-y20c3 flex-1 rounded border px-3 py-2 placeholder-gray-400"
 			/>
 
