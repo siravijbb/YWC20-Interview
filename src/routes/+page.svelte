@@ -114,6 +114,7 @@
 				placeholder="ค้นหาโดยชื่อหรือเลขประจำตัว"
 				bind:value={searchQuery}
 				onkeydown={(e) => e.key === 'Enter' ? handleSearch() : filterOntype()}
+				onkeyup={filterOntype}
 				onchange={filterOntype}
 				class="bg-y20c3 flex-1 rounded border px-3 py-2 placeholder-gray-400"
 			/>
