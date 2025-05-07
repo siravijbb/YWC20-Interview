@@ -35,9 +35,8 @@
 		if (!selectedCategory) {
 			return (error = 'กรุณาเลือกสาขาที่ต้องการค้นหา');
 		}
-		if(SearchLimit >= 10) {
+		if(SearchLimit >= 5) {
 			alert('กรุณารอ 10 วินาทีก่อนค้นหาอีกรอบ');
-			throw new Error('U spam too much,wait 1 min');
 		}
 		SearchLimit++
 
@@ -124,9 +123,8 @@
 <div
 	class=" bg-y20c3 min-h-[80vh] text-white transition-all sm:min-h-[76.3svh] lg:min-h-[91.5svh] 2xl:min-h-screen"
 >
-	<section class="top-0 bg-black md:sticky">
 		<Navbar />
-	</section>
+
 
 	<section class="mx-auto max-w-7xl space-y-4 p-8">
 		<h1
@@ -205,7 +203,7 @@
 			<div class="mt-4 grid grid-cols-1 gap-4 text-white">
 				{#each results as item}
 					<div
-						class="bg-y20c1/60 to-y20c2/60 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
+						class="bg-y20c1/80 to-y20c2/80 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
 					>
 						<a href="#">
 							<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>
@@ -225,13 +223,9 @@
 					</div>
 				{/each}
 			</div>
-		{:else if results.length == 0 && clicked !== false && error === ''}
+		{:else if results.length === 0 && clicked !== false && error === '' && selectedCategory !== '' }
 			<p class="text-center text-gray-400 md:text-left">ไม่พบผลการค้นหา กรุณาลองใหม่อีกครั้ง</p>
 		{/if}
 	</section>
 </div>
-<section
-	class="  to-y20c3 mx-auto space-y-4 bg-linear-to-t from-black from-1% px-8 pt-8 text-gray-400"
->
 	<Footer />
-</section>
