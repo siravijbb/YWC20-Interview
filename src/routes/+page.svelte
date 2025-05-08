@@ -179,7 +179,7 @@
 			<div class="mt-4 grid grid-cols-1 gap-4 text-white">
 				{#each results as item}
 					<div
-						class="bg-y20c1/60 to-y20c2/60 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
+						class="bg-y20c1/60 to-y20c2/60 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all "
 					>
 						<a href="#">
 							<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>

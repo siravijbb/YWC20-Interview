@@ -1,38 +1,72 @@
-# sv
+# Young Webmaster Camp 20 Website PG02
+## Siravij Praevisavakij
+ Powered by SvelteKit
+<img src="static/Readmeimg1.png">
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Features
+-   Seach using Name,Lastname,Reference
+- - by fetch and we manual select using mapped json 
+```
+	const categories = [
+		['design', 'สาขา Web Design'],
+		['programming', 'สาขา Web Programming'],
+		['marketing', 'สาขา Web Marketing'],
+		['content', 'สาขา Web Content']
+	];
+```
+```
+			const response = await fetch('https://api.ywc20.ywc.in.th/homework/candidates', {
+				headers: {
+					'Content-Type': 'application/json',
+					'x-reference-id': 'PG02'
+				}
+			});
+			if (response.status === 200) {
+				fullData = await response.json();
+			-->	const categoryData = fullData[selectedCategory] || [];
 
-## Creating a project
+```
+then we fillter it by lowercase then filter 
+```
+			.filter(
+				(item) =>
+					item.firstName.toLowerCase().includes(q) ||
+					item.lastName.toLowerCase().includes(q) ||
+					item.interviewRefNo.toLowerCase().includes(q)
+			)
+			.sort((a, b) => {
+				// Sort by firstName first, then lastName
+				const firstNameComparison = a.firstName.localeCompare(b.firstName);
+				if (firstNameComparison === 0) {
+					return a.lastName.localeCompare(b.lastName);
+				}
+				return firstNameComparison;
+			});
+```
+if using change option then call filter function
 
-If you're seeing this, you've probably already done this step. Congrats!
+```
+	function filterOntype() {
+		const categoryData = fullData[selectedCategory] || [];
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+		// Simple search: match query in firstName, lastName, or interviewRefNo
+		const q = searchQuery.toLowerCase();results = categoryData
+			.filter(
+				(item) =>
+					item.firstName.toLowerCase().includes(q) ||
+					item.lastName.toLowerCase().includes(q) ||
+					item.interviewRefNo.toLowerCase().includes(q)
+			)
+			.sort((a, b) => {
+				// Sort by firstName first, then lastName
+				const firstNameComparison = a.firstName.localeCompare(b.firstName);
+				if (firstNameComparison === 0) {
+					return a.lastName.localeCompare(b.lastName);
+				}
+				return firstNameComparison;
+			});
+	}
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Future fix
+-   Group function to less side effect
