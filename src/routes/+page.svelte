@@ -12,7 +12,12 @@
 	let clicked = $state(false);
 
 	type FullData = Record<string, Candidate[]>;
-
+	interface Candidate {
+		firstName: string;
+		lastName: string;
+		interviewRefNo: string;
+		major: string;
+	}
 	let fullData: FullData = $state({});
 	let SearchLimit = 0
 
@@ -25,12 +30,7 @@
 		['marketing', 'สาขา Web Marketing'],
 		['content', 'สาขา Web Content']
 	];
-	interface Candidate {
-		firstName: string;
-		lastName: string;
-		interviewRefNo: string;
-		major: string;
-	}
+
 
 	async function handleSearch() {
 		if (!selectedCategory) {

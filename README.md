@@ -67,6 +67,19 @@ if using change option then call filter function
 			});
 	}
 ```
+## Doc
+This just declare type of Full data of json we received
+since it's TS
+```
+	type FullData = Record<string, Candidate[]>;
+	interface Candidate {
+		firstName: string;
+		lastName: string;
+		interviewRefNo: string;
+		major: string;
+	}
+```
+
 
 ## Future fix
 -   Group function to less side effect
