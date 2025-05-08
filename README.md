@@ -79,7 +79,9 @@ since it's TS
 		major: string;
 	}
 ```
-
-
+Since it's svelte 5, We returned to APE again to using react runes,by using $state('') to make our variable able to change 
+```
+$state('')
+```
 ## Future fix
 -   Group function to less side effect
