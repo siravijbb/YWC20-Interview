@@ -1,3 +1,7 @@
+<section
+	class="  to-y20c3 mx-auto space-y-4 bg-linear-to-t from-black from-1% px-8 pt-8 text-gray-400"
+>
+
 <footer
 	id="footer"
 	class=" container mx-auto flex max-w-7xl grid-cols-1 flex-col items-center justify-center px-8 pb-8 md:grid md:grid-cols-7"
@@ -31,3 +35,4 @@
 		</p>
 	</div>
 </footer>
+</section>

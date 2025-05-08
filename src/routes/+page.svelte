@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Navbar from '$components/navbar.svelte';
 	import Footer from '$components/footer.svelte';
+	import { onMount } from 'svelte';
+	let mappedInterview = $state('');
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('');
@@ -12,6 +14,9 @@
 	type FullData = Record<string, Candidate[]>;
 
 	let fullData: FullData = $state({});
+	let SearchLimit = 0
+
+
 
 
 	const categories = [
@@ -31,6 +36,10 @@
 		if (!selectedCategory) {
 			return (error = 'กรุณาเลือกสาขาที่ต้องการค้นหา');
 		}
+		if(SearchLimit >= 5) {
+			alert('กรุณารอ 10 วินาทีก่อนค้นหาอีกรอบ');
+		}
+		SearchLimit++
 
 		error = '';
 		loading = true;
@@ -45,6 +54,9 @@
 				}
 			});
 			if (response.status === 200) {
+				RedirectToInterviewInfo()
+
+
 				fullData = await response.json();
 
 				const categoryData = fullData[selectedCategory] || [];
@@ -56,7 +68,15 @@
 						item.firstName.toLowerCase().includes(q) ||
 						item.lastName.toLowerCase().includes(q) ||
 						item.interviewRefNo.toLowerCase().includes(q)
-				);
+				)
+					.sort((a, b) => {
+						// Sort by firstName first, then lastName
+						const firstNameComparison = a.firstName.localeCompare(b.firstName);
+						if (firstNameComparison === 0) {
+							return a.lastName.localeCompare(b.lastName);
+						}
+						return firstNameComparison;
+					});
 			} else {
 				throw new Error(`fetch fail : ${response.status} ${response.statusText}`);
 			}
@@ -65,11 +85,12 @@
 
 			error = 'ไม่สามารถค้นหาได้ขณะนี้ กรุณาลองใหม่ภายหลัง';
 		} finally {
-			return (loading = false);
+			 loading = false;
 		}
 	}
 	function filterOntype() {
 		const categoryData = fullData[selectedCategory] || [];
+		RedirectToInterviewInfo();
 
 		// Simple search: match query in firstName, lastName, or interviewRefNo
 		const q = searchQuery.toLowerCase();results = categoryData
@@ -88,6 +109,34 @@
 				return firstNameComparison;
 			});
 	}
+	function RedirectToInterviewInfo(){
+		if(selectedCategory === "design") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/design"
+		}
+		else if(selectedCategory === "programming") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/programming"
+		}
+		else if(selectedCategory === "marketing") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/marketing"
+		}
+		else if(selectedCategory === "content") {
+			mappedInterview = "https://ywc20.ywc.in.th/interview/content"
+		}else {
+			mappedInterview = "#"
+		}
+	}
+
+
+	function ClearLimit() { // clear search limit
+		SearchLimit = 0;
+	}
+
+	onMount(() => {
+		let interval = setInterval(ClearLimit, 10000); // Poll every 5 seconds
+		return () => {
+			clearInterval(interval);
+		};
+	});
 </script>
 
 <head>
@@ -97,9 +146,8 @@
 <div
 	class=" bg-y20c3 min-h-[80vh] text-white transition-all sm:min-h-[76.3svh] lg:min-h-[91.5svh] 2xl:min-h-screen"
 >
-	<section class="top-0 bg-black md:sticky">
 		<Navbar />
-	</section>
+
 
 	<section class="mx-auto max-w-7xl space-y-4 p-8">
 		<h1
@@ -113,9 +161,8 @@
 				type="text"
 				placeholder="ค้นหาโดยชื่อหรือเลขประจำตัว"
 				bind:value={searchQuery}
-				onkeydown={(e) => e.key === 'Enter' ? handleSearch() : filterOntype()}
-				onkeyup={filterOntype}
-				onchange={filterOntype}
+				onkeyup={(e) => e.key === 'Enter' ? handleSearch() : filterOntype()}
+				onkeydown={filterOntype}
 				class="bg-y20c3 flex-1 rounded border px-3 py-2 placeholder-gray-400"
 			/>
 
@@ -179,9 +226,9 @@
 			<div class="mt-4 grid grid-cols-1 gap-4 text-white">
 				{#each results as item}
 					<div
-						class="bg-y20c1/60 to-y20c2/60 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all "
+						class="bg-y20c1/80 to-y20c2/80 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
 					>
-						<a href="#">
+						<a href={mappedInterview} target="_blank">
 							<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>
 							<p class="text-center text-lg">
 								เลขประจำตัวผู้เข้าสัมภาษณ์: <b>{item.interviewRefNo}</b>
@@ -199,13 +246,9 @@
 					</div>
 				{/each}
 			</div>
-		{:else if results.length == 0 && clicked !== false && error === ''}
+		{:else if results.length === 0 && clicked !== false && error === '' && selectedCategory !== '' }
 			<p class="text-center text-gray-400 md:text-left">ไม่พบผลการค้นหา กรุณาลองใหม่อีกครั้ง</p>
 		{/if}
 	</section>
 </div>
-<section
-	class="  to-y20c3 mx-auto space-y-4 bg-linear-to-t from-black from-1% px-8 pt-8 text-gray-400"
->
 	<Footer />
-</section>

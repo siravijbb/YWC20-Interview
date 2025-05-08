@@ -1,3 +1,4 @@
+<section class="top-0 bg-black md:sticky">
 <nav class=" mx-auto flex max-w-6xl items-center justify-between bg-black px-8 py-4 transition-all">
 	<div class="flex items-center justify-between gap-8">
 		<a href="https://ywc20.ywc.in.th"
@@ -31,3 +32,4 @@
 		>
 	</div>
 </nav>
+</section>
