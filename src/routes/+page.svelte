@@ -228,7 +228,7 @@
 					<div
 						class="bg-y20c1/80 to-y20c2/80 hover:bg-y20c1/40 hover:to-y20c2/40 rounded bg-gradient-to-r p-3 transition-all"
 					>
-						<a href={mappedInterview} target="_blank">
+						<a href={mappedInterview} >
 							<p class="text-center text-lg"><strong>{item.firstName} {item.lastName}</strong></p>
 							<p class="text-center text-lg">
 								เลขประจำตัวผู้เข้าสัมภาษณ์: <b>{item.interviewRefNo}</b>
