@@ -234,13 +234,13 @@
 								เลขประจำตัวผู้เข้าสัมภาษณ์: <b>{item.interviewRefNo}</b>
 							</p>
 							{#if item.major === 'web_design'}
-								<p class="text-center text-lg">สาขา:<b>Web Design</b></p>
+								<p class="text-center text-lg">สาขา: <b>Web Design</b></p>
 							{:else if item.major === 'web_programming'}
-								<p class="text-center text-lg">สาขา:<b>Web Programming</b></p>
+								<p class="text-center text-lg">สาขา: <b>Web Programming</b></p>
 							{:else if item.major === 'web_marketing'}
-								<p class="text-center text-lg">สาขา:<b>Web Marketing</b></p>
+								<p class="text-center text-lg">สาขา: <b>Web Marketing</b></p>
 							{:else if item.major === 'web_content'}
-								<p class="text-center text-lg">สาขา:<b>Web Content</b></p>
+								<p class="text-center text-lg">สาขา: <b>Web Content</b></p>
 							{/if}
 						</a>
 					</div>
