@@ -6,3 +6,11 @@
 	--color-y20c2: #ffb623;
 	--color-y20c3: #190200;
 }
+@font-face {
+	font-family: 'Line Seed Sans TH';
+	font-style: normal;
+	font-weight: 100;
+	font-display: swap;
+	src: url(LINESeedSansTH_W_Th.woff2) format('woff2');
+	unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}

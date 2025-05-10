@@ -59,24 +59,9 @@
 
 				fullData = await response.json();
 
-				const categoryData = fullData[selectedCategory] || [];
+				filterOntype()
 
-				// Simple search: match query in firstName, lastName, or interviewRefNo
-				const q = searchQuery.toLowerCase();
-				results = categoryData.filter(
-					(item) =>
-						item.firstName.toLowerCase().includes(q) ||
-						item.lastName.toLowerCase().includes(q) ||
-						item.interviewRefNo.toLowerCase().includes(q)
-				)
-					.sort((a, b) => {
-						// Sort by firstName first, then lastName
-						const firstNameComparison = a.firstName.localeCompare(b.firstName);
-						if (firstNameComparison === 0) {
-							return a.lastName.localeCompare(b.lastName);
-						}
-						return firstNameComparison;
-					});
+
 			} else {
 				throw new Error(`fetch fail : ${response.status} ${response.statusText}`);
 			}
